@@ -555,21 +555,21 @@ grep "PERFORMANCE" logs/supply_chain_alpha.log
 
 ## 🛣️ Roadmap
 
-### Version 2.0 (Q2 2024)
+### Version 2.0 (Q2 2025)
 
 - [ ] **Real-time Streaming**: Apache Kafka integration
 - [ ] **Advanced ML Models**: Transformer-based models
 - [ ] **Multi-Asset Strategies**: Commodities and FX integration
 - [ ] **Enhanced ESG**: Scope 3 emissions tracking
 
-### Version 2.1 (Q3 2024)
+### Version 2.1 (Q3 2025)
 
 - [ ] **Alternative Data**: Satellite imagery integration
 - [ ] **Blockchain Integration**: Supply chain transparency
 - [ ] **Mobile Dashboard**: React Native app
 - [ ] **API Marketplace**: Third-party integrations
 
-### Version 3.0 (Q4 2024)
+### Version 3.0 (Q4 2025)
 
 - [ ] **AI-Powered Insights**: GPT integration
 - [ ] **Autonomous Trading**: Fully automated strategies
