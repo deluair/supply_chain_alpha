@@ -1,0 +1,164 @@
+# Supply Chain Disruption Alpha Strategy Configuration
+
+# Data Sources Configuration
+data_sources:
+  shipping:
+    # Marine Traffic API for vessel tracking
+    marine_traffic:
+      base_url: "https://services.marinetraffic.com/api"
+      api_key: "${MARINE_TRAFFIC_API_KEY}"
+      rate_limit: 100  # requests per minute
+    
+    # Vessel Finder for additional shipping data
+    vessel_finder:
+      base_url: "https://www.vesselfinder.com/api"
+      api_key: "${VESSEL_FINDER_API_KEY}"
+      rate_limit: 60
+  
+  ports:
+    # Port congestion and throughput data
+    port_authorities:
+      - name: "Port of Los Angeles"
+        url: "https://www.portoflosangeles.org/business/statistics"
+        scrape_interval: 3600  # seconds
+      - name: "Port of Long Beach"
+        url: "https://www.polb.com/business/port-statistics"
+        scrape_interval: 3600
+      - name: "Port of Shanghai"
+        url: "https://www.portshanghai.com.cn/en"
+        scrape_interval: 7200
+  
+  freight_rates:
+    # Baltic Exchange for dry bulk rates
+    baltic_exchange:
+      base_url: "https://www.balticexchange.com"
+      indices: ["BDI", "BCI", "BPI", "BSI"]
+    
+    # Freightos for container rates
+    freightos:
+      base_url: "https://www.freightos.com/freight-index"
+      api_key: "${FREIGHTOS_API_KEY}"
+  
+  financial:
+    # Stock market data
+    alpha_vantage:
+      api_key: "${ALPHA_VANTAGE_API_KEY}"
+      base_url: "https://www.alphavantage.co/query"
+    
+    # Economic indicators
+    fred:
+      api_key: "${FRED_API_KEY}"
+      base_url: "https://api.stlouisfed.org/fred"
+  
+  esg:
+    # ESG data providers
+    refinitiv:
+      api_key: "${REFINITIV_API_KEY}"
+      base_url: "https://api.refinitiv.com/esg"
+    
+    sustainalytics:
+      api_key: "${SUSTAINALYTICS_API_KEY}"
+      base_url: "https://api.sustainalytics.com"
+
+# Model Configuration
+models:
+  disruption_predictor:
+    type: "ensemble"
+    algorithms: ["xgboost", "lightgbm", "random_forest"]
+    features:
+      - "port_congestion_index"
+      - "freight_rate_volatility"
+      - "vessel_delays"
+      - "weather_conditions"
+      - "geopolitical_risk"
+    
+    hyperparameters:
+      xgboost:
+        n_estimators: 100
+        max_depth: 6
+        learning_rate: 0.1
+      lightgbm:
+        n_estimators: 100
+        max_depth: 6
+        learning_rate: 0.1
+      random_forest:
+        n_estimators: 100
+        max_depth: 10
+  
+  sector_impact:
+    type: "neural_network"
+    architecture: "lstm"
+    layers: [64, 32, 16]
+    dropout: 0.2
+    epochs: 100
+
+# Trading Strategy Configuration
+strategies:
+  long_short_equity:
+    universe: "SP500"  # Stock universe
+    rebalance_frequency: "weekly"
+    position_sizing:
+      method: "risk_parity"
+      max_position_size: 0.05  # 5% max per position
+      max_sector_exposure: 0.3  # 30% max per sector
+    
+    signals:
+      disruption_score:
+        weight: 0.4
+        threshold: 0.7
+      esg_momentum:
+        weight: 0.3
+        lookback: 30  # days
+      technical_indicators:
+        weight: 0.3
+        indicators: ["rsi", "macd", "bollinger_bands"]
+
+# ESG Configuration
+esg_metrics:
+  environmental:
+    - "carbon_emissions"
+    - "water_usage"
+    - "waste_management"
+    - "renewable_energy"
+  
+  social:
+    - "labor_practices"
+    - "supply_chain_ethics"
+    - "community_impact"
+    - "product_safety"
+  
+  governance:
+    - "board_diversity"
+    - "executive_compensation"
+    - "transparency"
+    - "risk_management"
+
+# Database Configuration
+database:
+  type: "postgresql"
+  host: "${DB_HOST}"
+  port: 5432
+  name: "supply_chain_alpha"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/supply_chain_alpha.log"
+
+# Scheduling Configuration
+scheduling:
+  data_collection:
+    shipping_data: "0 */6 * * *"  # Every 6 hours
+    port_data: "0 */4 * * *"     # Every 4 hours
+    freight_rates: "0 9 * * *"   # Daily at 9 AM
+    esg_data: "0 2 * * 1"       # Weekly on Monday at 2 AM
+  
+  model_training:
+    disruption_model: "0 3 * * 1"  # Weekly on Monday at 3 AM
+    sector_model: "0 4 * * 1"     # Weekly on Monday at 4 AM
+  
+  strategy_execution:
+    rebalancing: "0 16 * * 1"     # Weekly on Monday at 4 PM

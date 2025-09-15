@@ -1,0 +1,148 @@
+# Development Environment Configuration
+# Overrides base configuration for local development
+
+# Database Configuration - Development
+database:
+  type: "sqlite"
+  sqlite_path: "data/dev_supply_chain_alpha.db"
+  pool_size: 5
+  max_overflow: 10
+  
+  # Redis for development (optional)
+  redis_host: "localhost"
+  redis_port: 6379
+  redis_db: 1  # Use different DB for dev
+
+# API Configuration - Development
+api:
+  # Reduced rate limits for development
+  rate_limit_requests_per_minute: 30
+  rate_limit_requests_per_hour: 500
+  
+  # Shorter timeouts for faster feedback
+  request_timeout: 15
+  max_retries: 2
+  retry_delay: 0.5
+
+# Model Configuration - Development
+models:
+  # Faster training for development
+  train_test_split: 0.7
+  validation_split: 0.15
+  cross_validation_folds: 3
+  
+  # Smaller models for faster iteration
+  port_congestion_model:
+    algorithm: "random_forest"
+    n_estimators: 20
+    max_depth: 5
+    min_samples_split: 10
+    min_samples_leaf: 5
+  
+  route_disruption_model:
+    algorithm: "gradient_boosting"
+    n_estimators: 20
+    learning_rate: 0.2
+    max_depth: 4
+  
+  rate_volatility_model:
+    algorithm: "lstm"
+    sequence_length: 15
+    hidden_units: 32
+    dropout_rate: 0.3
+    epochs: 20
+  
+  # Development model persistence
+  model_save_path: "models/dev"
+  model_versioning: false
+
+# Trading Configuration - Development
+trading:
+  # Smaller portfolio for testing
+  max_positions: 20
+  max_position_size: 0.1  # 10% max per position for testing
+  target_leverage: 1.0
+  cash_buffer: 0.2
+  
+  # More conservative risk management for testing
+  max_sector_exposure: 0.5
+  max_single_stock_weight: 0.1
+  stop_loss_threshold: -0.1
+  take_profit_threshold: 0.15
+  var_limit: 0.05  # 5% daily VaR limit
+  
+  # Signal generation - development
+  min_conviction_score: 0.4
+  signal_decay_days: 14
+  rebalance_frequency: "daily"
+  esg_weight: 0.1
+  
+  # Execution - development
+  slippage_model: "linear"
+  transaction_costs: 0.002  # 20 bps for simulation
+  market_impact_factor: 0.001
+  
+  # Backtesting - shorter period for faster testing
+  backtest_start_date: "2023-01-01"
+  benchmark_symbol: "SPY"
+  
+  # Smaller stock universe for development
+  stock_universe:
+    # Transportation
+    - "FDX"
+    - "UPS"
+    - "DAL"
+    # Retail
+    - "WMT"
+    - "TGT"
+    - "AMZN"
+    # Technology
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    # Manufacturing
+    - "CAT"
+    - "GE"
+    # Energy
+    - "XOM"
+    - "CVX"
+
+# Logging Configuration - Development
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s"
+  file_path: "logs/dev_supply_chain_alpha.log"
+  max_file_size: "50MB"
+  backup_count: 3
+  
+  # Enhanced tracking for development
+  track_execution_time: true
+  track_memory_usage: true
+  alert_threshold_seconds: 10.0
+  
+  # Structured logging for development
+  use_json_format: false
+  include_metadata: true
+
+# Monitoring Configuration - Development
+monitoring:
+  # More frequent health checks for development
+  health_check_interval: 30  # seconds
+  database_health_check: true
+  api_health_check: false  # Disable API health checks in dev
+  
+  # Metrics collection
+  collect_system_metrics: true
+  collect_business_metrics: true
+  metrics_retention_days: 30  # Shorter retention for dev
+  
+  # Alerting - disabled for development
+  email_alerts: false
+  
+  # More lenient alert thresholds for development
+  alert_thresholds:
+    cpu_usage: 90.0
+    memory_usage: 90.0
+    disk_usage: 95.0
+    error_rate: 10.0
+    response_time: 10.0

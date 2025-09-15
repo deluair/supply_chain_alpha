@@ -1,0 +1,259 @@
+# Production Environment Configuration
+# Optimized settings for live deployment
+
+# Database Configuration - Production
+database:
+  type: "postgresql"
+  host: "prod-db.supply-chain-alpha.com"
+  port: 5432
+  database: "supply_chain_alpha_prod"
+  pool_size: 20
+  max_overflow: 40
+  pool_timeout: 60
+  ssl_mode: "require"
+  
+  # Redis for production
+  redis_host: "prod-redis.supply-chain-alpha.com"
+  redis_port: 6379
+  redis_db: 0
+
+# API Configuration - Production
+api:
+  # Production rate limits
+  rate_limit_requests_per_minute: 100
+  rate_limit_requests_per_hour: 2000
+  
+  # Production timeouts
+  request_timeout: 45
+  max_retries: 5
+  retry_delay: 2.0
+
+# Model Configuration - Production
+models:
+  # Production training parameters
+  train_test_split: 0.85
+  validation_split: 0.1
+  cross_validation_folds: 10
+  random_state: 42
+  
+  # Production-optimized models
+  port_congestion_model:
+    algorithm: "random_forest"
+    n_estimators: 200
+    max_depth: 15
+    min_samples_split: 3
+    min_samples_leaf: 1
+    n_jobs: -1  # Use all available cores
+  
+  route_disruption_model:
+    algorithm: "gradient_boosting"
+    n_estimators: 100
+    learning_rate: 0.05
+    max_depth: 8
+    subsample: 0.8
+  
+  rate_volatility_model:
+    algorithm: "lstm"
+    sequence_length: 60
+    hidden_units: 128
+    dropout_rate: 0.1
+    epochs: 200
+    batch_size: 64
+  
+  # Production model persistence
+  model_save_path: "/opt/supply_chain_alpha/models/prod"
+  model_versioning: true
+
+# Trading Configuration - Production
+trading:
+  # Production portfolio parameters
+  max_positions: 150
+  max_position_size: 0.03  # 3% max per position
+  target_leverage: 1.5
+  cash_buffer: 0.05
+  
+  # Strict risk management for production
+  max_sector_exposure: 0.25
+  max_single_stock_weight: 0.03
+  stop_loss_threshold: -0.12
+  take_profit_threshold: 0.20
+  var_limit: 0.015  # 1.5% daily VaR limit
+  
+  # Production signal generation
+  min_conviction_score: 0.7
+  signal_decay_days: 45
+  rebalance_frequency: "weekly"
+  esg_weight: 0.25
+  
+  # Production execution
+  slippage_model: "square_root"
+  transaction_costs: 0.0008  # 8 bps
+  market_impact_factor: 0.0003
+  
+  # Production backtesting
+  backtest_start_date: "2018-01-01"
+  benchmark_symbol: "SPY"
+  
+  # Full stock universe for production
+  stock_universe:
+    # Transportation & Logistics
+    - "FDX"
+    - "UPS"
+    - "DAL"
+    - "UAL"
+    - "AAL"
+    - "LUV"
+    - "CHRW"
+    - "EXPD"
+    - "XPO"
+    - "JBHT"
+    # Retail & Consumer
+    - "WMT"
+    - "TGT"
+    - "COST"
+    - "HD"
+    - "LOW"
+    - "AMZN"
+    - "NKE"
+    - "SBUX"
+    - "MCD"
+    - "DIS"
+    # Technology
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "META"
+    - "NVDA"
+    - "TSLA"
+    - "NFLX"
+    - "CRM"
+    - "ORCL"
+    - "IBM"
+    # Manufacturing & Industrial
+    - "CAT"
+    - "DE"
+    - "GE"
+    - "MMM"
+    - "HON"
+    - "UTX"
+    - "BA"
+    - "LMT"
+    - "NOC"
+    - "RTX"
+    # Energy & Utilities
+    - "XOM"
+    - "CVX"
+    - "COP"
+    - "EOG"
+    - "SLB"
+    - "HAL"
+    - "KMI"
+    - "OKE"
+    - "WMB"
+    - "EPD"
+    # Materials & Chemicals
+    - "LIN"
+    - "APD"
+    - "ECL"
+    - "DD"
+    - "DOW"
+    - "PPG"
+    - "SHW"
+    - "FCX"
+    - "NEM"
+    - "GOLD"
+    # Financial Services
+    - "JPM"
+    - "BAC"
+    - "WFC"
+    - "C"
+    - "GS"
+    - "MS"
+    - "BLK"
+    - "AXP"
+    # Healthcare & Pharmaceuticals
+    - "JNJ"
+    - "PFE"
+    - "UNH"
+    - "ABBV"
+    - "MRK"
+    - "BMY"
+    - "GILD"
+    - "AMGN"
+
+# Logging Configuration - Production
+logging:
+  level: "WARNING"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "/var/log/supply_chain_alpha/production.log"
+  max_file_size: "500MB"
+  backup_count: 30
+  
+  # Production performance tracking
+  track_execution_time: true
+  track_memory_usage: true
+  alert_threshold_seconds: 60.0
+  
+  # Structured logging for production
+  use_json_format: true
+  include_metadata: true
+  
+  # Elasticsearch for production logging
+  elasticsearch_host: "prod-elasticsearch.supply-chain-alpha.com"
+  elasticsearch_port: 9200
+  elasticsearch_index: "supply-chain-alpha-prod"
+
+# Monitoring Configuration - Production
+monitoring:
+  # Production health checks
+  health_check_interval: 120  # seconds
+  database_health_check: true
+  api_health_check: true
+  
+  # Production metrics collection
+  collect_system_metrics: true
+  collect_business_metrics: true
+  metrics_retention_days: 365  # 1 year retention
+  
+  # Production alerting
+  email_alerts: true
+  slack_webhook_url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  
+  # Strict alert thresholds for production
+  alert_thresholds:
+    cpu_usage: 70.0
+    memory_usage: 75.0
+    disk_usage: 80.0
+    error_rate: 2.0
+    response_time: 3.0
+    
+# Production-specific settings
+production:
+  # Security settings
+  enable_ssl: true
+  ssl_cert_path: "/etc/ssl/certs/supply-chain-alpha.crt"
+  ssl_key_path: "/etc/ssl/private/supply-chain-alpha.key"
+  
+  # Load balancing
+  enable_load_balancer: true
+  worker_processes: 4
+  worker_connections: 1000
+  
+  # Caching
+  enable_redis_cache: true
+  cache_ttl: 3600  # 1 hour
+  
+  # Backup settings
+  enable_automated_backups: true
+  backup_schedule: "0 2 * * *"  # Daily at 2 AM
+  backup_retention_days: 90
+  
+  # Performance optimization
+  enable_query_optimization: true
+  enable_connection_pooling: true
+  enable_compression: true
+  
+  # Compliance and auditing
+  enable_audit_logging: true
+  audit_log_path: "/var/log/supply_chain_alpha/audit.log"
+  data_retention_policy: 2555  # 7 years in days

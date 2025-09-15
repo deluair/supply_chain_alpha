@@ -1,0 +1,193 @@
+# Base Configuration for Supply Chain Alpha
+# This file contains default settings that apply to all environments
+
+# Database Configuration
+database:
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  database: "supply_chain_alpha"
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+  ssl_mode: "prefer"
+  
+  # Redis settings
+  redis_host: "localhost"
+  redis_port: 6379
+  redis_db: 0
+
+# API Configuration
+api:
+  # Base URLs
+  marine_traffic_base_url: "https://api.marinetraffic.com"
+  vessel_finder_base_url: "https://api.vesselfinder.com"
+  baltic_exchange_base_url: "https://api.balticexchange.com"
+  freightos_base_url: "https://api.freightos.com"
+  
+  # Rate limiting
+  rate_limit_requests_per_minute: 60
+  rate_limit_requests_per_hour: 1000
+  
+  # Timeout settings
+  request_timeout: 30
+  max_retries: 3
+  retry_delay: 1.0
+
+# Model Configuration
+models:
+  # Training parameters
+  train_test_split: 0.8
+  validation_split: 0.1
+  cross_validation_folds: 5
+  random_state: 42
+  
+  # Feature engineering
+  feature_lag_periods: [1, 7, 14, 30]
+  rolling_window_sizes: [7, 14, 30, 60]
+  technical_indicators: true
+  
+  # Model persistence
+  model_save_path: "models/saved"
+  model_versioning: true
+  
+  # Port congestion model
+  port_congestion_model:
+    algorithm: "random_forest"
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 5
+    min_samples_leaf: 2
+  
+  # Route disruption model
+  route_disruption_model:
+    algorithm: "gradient_boosting"
+    n_estimators: 50
+    learning_rate: 0.1
+    max_depth: 6
+  
+  # Rate volatility model
+  rate_volatility_model:
+    algorithm: "lstm"
+    sequence_length: 30
+    hidden_units: 64
+    dropout_rate: 0.2
+    epochs: 100
+
+# Trading Configuration
+trading:
+  # Portfolio parameters
+  max_positions: 100
+  max_position_size: 0.05  # 5% max per position
+  target_leverage: 1.3
+  cash_buffer: 0.1
+  
+  # Risk management
+  max_sector_exposure: 0.3
+  max_single_stock_weight: 0.05
+  stop_loss_threshold: -0.15
+  take_profit_threshold: 0.25
+  var_limit: 0.02  # 2% daily VaR limit
+  
+  # Signal generation
+  min_conviction_score: 0.6
+  signal_decay_days: 30
+  rebalance_frequency: "weekly"
+  esg_weight: 0.2
+  
+  # Execution
+  slippage_model: "linear"
+  transaction_costs: 0.001  # 10 bps
+  market_impact_factor: 0.0005
+  
+  # Backtesting
+  backtest_start_date: "2020-01-01"
+  benchmark_symbol: "SPY"
+  
+  # Stock universe
+  stock_universe:
+    # Transportation
+    - "FDX"
+    - "UPS"
+    - "DAL"
+    - "UAL"
+    - "AAL"
+    - "LUV"
+    # Retail
+    - "WMT"
+    - "TGT"
+    - "COST"
+    - "HD"
+    - "LOW"
+    - "AMZN"
+    # Technology
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "META"
+    - "NVDA"
+    - "TSLA"
+    # Manufacturing
+    - "CAT"
+    - "DE"
+    - "GE"
+    - "MMM"
+    - "HON"
+    - "UTX"
+    # Energy
+    - "XOM"
+    - "CVX"
+    - "COP"
+    - "EOG"
+    - "SLB"
+    - "HAL"
+    # Materials
+    - "LIN"
+    - "APD"
+    - "ECL"
+    - "DD"
+    - "DOW"
+    - "PPG"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "logs/supply_chain_alpha.log"
+  max_file_size: "100MB"
+  backup_count: 10
+  
+  # Performance tracking
+  track_execution_time: true
+  track_memory_usage: true
+  alert_threshold_seconds: 30.0
+  
+  # Structured logging
+  use_json_format: false
+  include_metadata: true
+  
+  # Elasticsearch settings
+  elasticsearch_index: "supply-chain-alpha"
+
+# Monitoring Configuration
+monitoring:
+  # Health checks
+  health_check_interval: 60  # seconds
+  database_health_check: true
+  api_health_check: true
+  
+  # Metrics collection
+  collect_system_metrics: true
+  collect_business_metrics: true
+  metrics_retention_days: 90
+  
+  # Alerting
+  email_alerts: false
+  
+  # Alert thresholds
+  alert_thresholds:
+    cpu_usage: 80.0
+    memory_usage: 85.0
+    disk_usage: 90.0
+    error_rate: 5.0
+    response_time: 5.0
