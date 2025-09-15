@@ -589,12 +589,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-### Getting Help
-
-- **Documentation**: [docs.supply-chain-alpha.com](https://docs.supply-chain-alpha.com)
-- **Issues**: [GitHub Issues](https://github.com/your-org/supply-chain-alpha/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/supply-chain-alpha/discussions)
-- **Email**: support@supply-chain-alpha.com
 
 ### Enterprise Support
 
